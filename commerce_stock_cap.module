@@ -33,7 +33,7 @@ $query = \Drupal::database()->query("SELECT oi.order_id, oi.order_item_id, o.ord
     ]);
   $results = $query->fetchAll();
   foreach ($results as $row) {
-    $total_sold = $total_sold + round($row->quantity);
+    $total_sold = $total_sold + round($row->quantity * 2);
   }
 
 if ($total_sold >= $total_available ){
