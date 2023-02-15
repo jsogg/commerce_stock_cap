@@ -1,0 +1,46 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+
+function commerce_stock_cap_form_alter( &$form, FormStateInterface &$form_state, $form_id )
+{
+
+// 163 is the product ID of an item where I want the variants to share stock
+if (strpos($form_id, "commerce_order_item_add_to_cart_form_commerce_product_163") !== false) {
+
+// 55 is the total I want to sell over both variants
+$total_sold = 0;
+$total_available = 55;
+
+// 331 is the first variant ID of product ID 163
+// Count all sales of that variant ID
+$query = \Drupal::database()->query("SELECT oi.order_id, oi.order_item_id, o.order_number, oi.title, oi.quantity, oi.unit_price__number, oi.total_price__number, o.placed, o.completed FROM commerce_order_item oi JOIN commerce_product__variations pv ON pv.variations_target_id = oi.purchased_entity JOIN commerce_order o ON o.order_id = oi.order_id WHERE o.state = 'completed' AND pv.variations_target_id = :product_id", [
+      ':product_id' => '331',
+    ]);
+  $results = $query->fetchAll();
+  foreach ($results as $row) {
+    $total_sold = $total_sold + round($row->quantity);
+  }
+
+// 332 is the second variant ID of product 163
+// Count all sales of that variant ID
+$query = \Drupal::database()->query("SELECT oi.order_id, oi.order_item_id, o.order_number, oi.title, oi.quantity, oi.unit_price__number, oi.total_price__number, o.placed, o.completed FROM commerce_order_item oi JOIN commerce_product__variations pv ON pv.variations_target_id = oi.purchased_entity JOIN commerce_order o ON o.order_id = oi.order_id WHERE o.state = 'completed' AND pv.variations_target_id = :product_id", [
+      ':product_id' => '332',
+    ]);
+  $results = $query->fetchAll();
+  foreach ($results as $row) {
+    $total_sold = $total_sold + round($row->quantity);
+  }
+
+if ($total_sold >= $total_available ){
+    $form[ 'actions' ][ 'submit' ][ '#value' ] = t( 'Sold Out' );
+    $form[ 'actions' ][ 'submit' ][ '#disabled' ] = true;
+  } else {
+    $form[ 'actions' ][ 'submit' ][ '#value' ] = t( 'Add to Cart' );
+  }
+
+}
