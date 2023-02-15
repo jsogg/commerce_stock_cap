@@ -14,7 +14,7 @@ if (strpos($form_id, "commerce_order_item_add_to_cart_form_commerce_product_163"
 
 // 55 is the total I want to sell over both variants
 $total_sold = 0;
-$total_available = 55;
+$total_available = 100;
 
 // 331 is the first variant ID of product ID 163
 // Count all sales of that variant ID
