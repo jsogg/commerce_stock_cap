@@ -11,3 +11,7 @@ If total_sold > total_available, then we change the Add-To-Cart button to 'Sold-
 <br />
 • Product ID of master product must be known and hard-coded<br />
 • Variant IDs of that master product must also be known, hard coded, and a logic block to handle each variant ID<br />
+<br />
+This can be used with or without commerce_stock
+<br />
+Note: Does not prohibit anyone from using qty adjustments in cart view
