@@ -15,3 +15,5 @@ If total_sold > total_available, then we change the Add-To-Cart button to 'Sold-
 This can be used with or without commerce_stock
 <br />
 Note: Does not prohibit anyone from using qty adjustments in cart view
+
+TODO: Add Configuration Screen so we don't need to hardcode our configuration in code. 
